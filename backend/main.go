@@ -21,6 +21,11 @@ func main() {
 	h := handler.NewHandler(db)
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{echo.GET, echo.POST},
+	}))
 
 	e.GET("/books", h.GetBooks)
 	e.GET("/books/:id", h.GetBook)
