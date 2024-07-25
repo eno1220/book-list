@@ -17,7 +17,7 @@ type DBConfig struct {
 	DBName   string
 }
 
-func InitDB() *gorm.DB {
+func InitDB() (*gorm.DB, error) {
 	dbConfig := DBConfig{
 		Host:     "localhost",
 		Port:     "3306",
@@ -37,6 +37,7 @@ func InitDB() *gorm.DB {
 	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
+		return nil, err
 	}
-	return DB
+	return DB, nil
 }

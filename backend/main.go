@@ -4,13 +4,18 @@ import (
 	"backend/handler"
 	"backend/model"
 	"backend/repository"
+	"log"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 func main() {
-	db := repository.InitDB()
+	db, err := repository.InitDB()
+	if err != nil {
+		log.Printf("failed to connect database: %v", err)
+		return
+	}
 	db.AutoMigrate(&model.Book{})
 
 	h := handler.NewHandler(db)
